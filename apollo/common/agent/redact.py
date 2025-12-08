@@ -1,7 +1,10 @@
 import re
 from typing import Any, List, Dict, Tuple
 
-from apollo.common.agent.constants import ATTRIBUTE_VALUE_REDACTED, LOG_ATTRIBUTE_TRACE_ID
+from apollo.common.agent.constants import (
+    ATTRIBUTE_VALUE_REDACTED,
+    LOG_ATTRIBUTE_TRACE_ID,
+)
 
 _STANDARD_REDACTED_ATTRIBUTES = [
     "pass",
