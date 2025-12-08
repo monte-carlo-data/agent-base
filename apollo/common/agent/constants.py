@@ -128,3 +128,6 @@ STORAGE_TYPE_AZURE = "AZURE_BLOB"
 # Response types
 RESPONSE_TYPE_JSON = "json"
 RESPONSE_TYPE_URL = "url"
+
+# Platform Info
+PLATFORM_INFO_KEY_IMAGE = "image"
