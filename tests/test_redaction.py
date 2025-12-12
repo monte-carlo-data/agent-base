@@ -1,6 +1,9 @@
 from unittest import TestCase
 
-from apollo.common.agent.constants import ATTRIBUTE_VALUE_REDACTED, LOG_ATTRIBUTE_TRACE_ID
+from apollo.common.agent.constants import (
+    ATTRIBUTE_VALUE_REDACTED,
+    LOG_ATTRIBUTE_TRACE_ID,
+)
 from apollo.common.agent.redact import AgentRedactUtilities
 
 
