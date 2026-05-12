@@ -41,6 +41,16 @@ STORAGE_BUCKET_NAME_ENV_VAR = "MCD_STORAGE_BUCKET_NAME"
 # Environment variable used to configure the storage account name for Azure
 STORAGE_ACCOUNT_NAME_ENV_VAR = "MCD_STORAGE_ACCOUNT_NAME"
 
+# Environment variables for Azure service principal (OAuth) authentication.
+# When MCD_AZURE_STORAGE_AUTH_TYPE is set to "service_principal", the agent authenticates
+# using ClientSecretCredential instead of DefaultAzureCredential (managed identity).
+AZURE_STORAGE_AUTH_TYPE_ENV_VAR = "MCD_AZURE_STORAGE_AUTH_TYPE"
+AUTH_TYPE_AZURE_SERVICE_PRINCIPAL = "service_principal"
+AZURE_SP_TENANT_ID_ENV_VAR = "MCD_AZURE_SP_TENANT_ID"
+AZURE_SP_CLIENT_ID_ENV_VAR = "MCD_AZURE_SP_CLIENT_ID"
+AZURE_SP_CLIENT_SECRET_ENV_VAR = "MCD_AZURE_SP_CLIENT_SECRET"
+AZURE_STORAGE_ACCOUNT_URL_ENV_VAR = "MCD_AZURE_STORAGE_ACCOUNT_URL"
+
 # Environment variables used to configure S3-compatible storage (MinIO, Ceph, etc.)
 STORAGE_ENDPOINT_URL_ENV_VAR = "MCD_STORAGE_ENDPOINT_URL"
 STORAGE_ACCESS_KEY_ENV_VAR = "MCD_STORAGE_ACCESS_KEY"
