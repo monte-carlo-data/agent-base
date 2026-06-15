@@ -19,6 +19,7 @@ from apollo.common.agent.env_vars import (
     CHECK_OUTBOUND_IP_ADDRESS_URL_ENV_VAR,
     CHECK_OUTBOUND_IP_ADDRESS_URL_DEFAULT_VALUE,
 )
+from apollo.common.agent.redact import AgentRedactUtilities
 from apollo.common.interfaces.agent_response import AgentResponse
 
 
@@ -96,15 +97,29 @@ class AgentUtils:
         error_type: Optional[str] = None,
         error_attrs: Optional[Dict] = None,
     ) -> Dict:
+        # Error responses are sent to the MCD SaaS and logged in the customer account.
+        # Exception messages and tracebacks can embed credentials (e.g. database connect
+        # strings), so every field is scrubbed here, the single choke point for error
+        # responses. Free-form text is run through `redact_sensitive_text`, which strips
+        # only the secret *value* and leaves the surrounding message intact so the error
+        # stays actionable; `error_attrs` is structured, so it uses key-based redaction.
+        # `error_type` is the exception class name and is intentionally left as-is so the
+        # SaaS still knows what failed.
         response: Dict[str, Any] = {
-            ATTRIBUTE_NAME_ERROR: message,
+            ATTRIBUTE_NAME_ERROR: AgentRedactUtilities.redact_sensitive_text(message),
         }
         if exception_message:
-            response[ATTRIBUTE_NAME_EXCEPTION] = exception_message
+            response[ATTRIBUTE_NAME_EXCEPTION] = (
+                AgentRedactUtilities.redact_sensitive_text(exception_message)
+            )
         if stack_trace:
-            response[ATTRIBUTE_NAME_STACK_TRACE] = stack_trace
+            response[ATTRIBUTE_NAME_STACK_TRACE] = (
+                AgentRedactUtilities.redact_sensitive_text(stack_trace)
+            )
         if error_type:
             response[ATTRIBUTE_NAME_ERROR_TYPE] = error_type
         if error_attrs:
-            response[ATTRIBUTE_NAME_ERROR_ATTRS] = error_attrs
+            response[ATTRIBUTE_NAME_ERROR_ATTRS] = AgentRedactUtilities.standard_redact(
+                error_attrs
+            )
         return response
