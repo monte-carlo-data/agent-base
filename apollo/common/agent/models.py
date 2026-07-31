@@ -106,19 +106,6 @@ class AgentCommands(AgentOperation):
     commands: List[AgentCommand]
 
 
-@dataclass(kw_only=True)
-class AgentScriptModule:
-    source: str
-    name: str
-
-
-@dataclass(kw_only=True)
-class AgentScript(AgentOperation):
-    entry_module: str
-    modules: List[AgentScriptModule]
-    kwargs: Dict
-
-
 @dataclass
 class AgentHealthInformation(DataClassJsonMixin):
     platform: str
