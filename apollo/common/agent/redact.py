@@ -16,6 +16,29 @@ _STANDARD_REDACTED_ATTRIBUTES = [
     "credential",
     "key",
 ]
+
+# Sensitive environment variable NAMES. Narrower than the payload list above:
+# "client"/"user" are not credential markers in an env var name. Full
+# "connection_string" keeps MCD_*_CONNECTION_TIMEOUT visible.
+_SENSITIVE_ENV_VAR_NAME_SUBSTRINGS = (
+    "secret",
+    "pass",  # password, passwd, passphrase
+    "token",
+    "key",
+    "credential",
+    "connection_string",
+)
+
+
+def is_sensitive_env_var_name(name: str) -> bool:
+    """
+    Return True when an env var's name suggests its value is a credential. Errs
+    towards hiding: over-redaction costs diagnostics, under-redaction leaks.
+    """
+    name_lower = name.lower()
+    return any(s in name_lower for s in _SENSITIVE_ENV_VAR_NAME_SUBSTRINGS)
+
+
 _REDACT_VALUE_EXPRESSIONS = [
     re.compile(r"[a-zA-Z0-9_\-+=]{32,64}"),  # trying to match tokens and API keys
     re.compile(r"password", re.IGNORECASE),
